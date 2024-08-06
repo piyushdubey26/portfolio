@@ -45,8 +45,8 @@ You can view my resume [here](resume.html).
 
 Feel free to reach out to me through the following channels:
 
-- **Email**: [piyush@example.com](mailto:piyush@example.com)
-- **LinkedIn**: [Piyush Dubey]([https://www.linkedin.com/in/piyushdubey](https://www.linkedin.com/in/piyush-dubey-70183429a))
+- **Email**: [piyush@example.com](mailto:piyushdubey2613@example.com)
+- **LinkedIn**: [Piyush Dubey](https://www.linkedin.com/in/piyush-dubey-70183429a)
 - **GitHub**: [piyushdubey](https://github.com/piyushdubey26)
 
 ## Installation
