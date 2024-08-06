@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PIYUSH DUBEY Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle("dark-theme");
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="skills.html" class="nav-link">Skills</a></li>
+            <li><a href="projects.html" class="nav-link">Projects</a></li>
+            <li><a href="resume.html" class="nav-link">Resume</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header">
+        <h1><strong>PIYUSH DUBEY</strong></h1>
+        <p>Web Developer & Designer</p>
+        <button onclick="toggleTheme()">Toggle Theme</button>
+    </header>
+
+    <!-- Home Section (or main content for index) -->
+    <div class="main-content">
+        <section id="home" class="section">
+            <h2>Welcome to My Portfolio</h2>
+            <p>Explore my work and get to know me!</p>
+        </section>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 PIYUSH DUBEY. All rights reserved.</p>
+    </footer>
+</body>
+</html>
