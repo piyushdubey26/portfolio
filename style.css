@@ -1,0 +1,167 @@
+/* Light Theme Styles */
+body {
+    background-color: #F0E5DE; /* light maroon */
+    color: #000;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 2px solid #ccc;
+    opacity: 0;
+    transform: translateY(-100%);
+    animation: slide-in 1s forwards;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.header p {
+    font-size: 1.2em;
+}
+
+.header button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.section {
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fade-in 0.5s forwards;
+}
+
+.section img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto; /* Center the image */
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: #FFF;
+}
+
+/* Link Styles */
+a {
+    color: inherit; /* Inherit the current text color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Dark Theme Styles */
+body.dark-theme {
+    background-color: #121212; /* crystal black */
+    color: #d3d3d3; /* decent light color */
+}
+
+.dark-theme .header {
+    background-color: #1c1c1c; /* slightly lighter than crystal black */
+    color: #d3d3d3; /* decent light color */
+}
+
+.dark-theme .main-content {
+    background-color: #232323; /* slightly lighter than crystal black */
+}
+
+.dark-theme .section {
+    background-color: #2c2c2c; /* slightly lighter than crystal black */
+    color: #d3d3d3; /* decent light color */
+}
+
+.dark-theme .footer {
+    background-color: #1a1a1a; /* slightly lighter than crystal black */
+    color: #d3d3d3; /* decent light color */
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #333;
+}
+
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    display: block;
+}
+
+.nav-link:hover {
+    background-color: #575757;
+}
+
+.nav-link.active {
+    background-color: #4CAF50;
+}
+
+/* Keyframes for Animations */
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Adding class for header slide-in animation */
+.header.slide-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: transform 1s, opacity 1s;
+}
+
+/* Centering the image */
+.center-image {
+    display: block;
+    margin: 10px auto;
+}
