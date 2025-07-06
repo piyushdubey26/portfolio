@@ -24,7 +24,7 @@ Hey there! I'm Piyush Dubey, a dynamic second-year B.Tech CSE student at Babu Ba
 - **Web Development**: HTML, CSS, JavaScript, Node.js
 - **Data Science**: Predictive Modeling, Data Visualization, Statistical Analysis
 - **Machine Learning**: Machine Learning Algorithms, Data Preprocessing, Model Evaluation
-
+-**DATABASE: mysql
 ## Projects
 
 Here are some of the projects I've worked on:
@@ -36,6 +36,14 @@ Here are some of the projects I've worked on:
 2. **Project Name**: [Project Link](#)
    - Description: Brief description of the project.
    - Technologies Used: HTML, CSS, JavaScript, etc.
+  
+   - 
+3.**Project Name**: [github.com/piyushdubey26/ecommerce-sql-project](#)
+   - Description: ecommerce-sql-project. Just built a real-world E-Commerce Order Management SQL Project!
+This project simulates how platforms like Amazon or Flipkart manage users, orders, payments, and product stocks — using only SQL! 💻
+
+ - Technologies Used: mysql
+
 
 ## Resume
 
