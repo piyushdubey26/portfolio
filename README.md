@@ -53,7 +53,7 @@ You can view my resume [here](resume.html).
 
 Feel free to reach out to me through the following channels:
 
-- **Email**: [piyush@example.com](mailto:piyushdubey2613@example.com)
+- **Email**: [piyush@example.com](mailto:piyushdubey447@example.com)
 - **LinkedIn**: [Piyush Dubey](https://www.linkedin.com/in/piyush-dubey-70183429a)
 - **GitHub**: [piyushdubey](https://github.com/piyushdubey26)
 
@@ -62,13 +62,13 @@ Feel free to reach out to me through the following channels:
 To run this project locally, follow these steps:
 
 1. Clone the repository:
-    ```sh
+    ```sh.
     git clone https://github.com/piyushdubey/portfolio.git
     ```
 
 2. Navigate to the project directory:
     ```sh
-    cd portfolio
+    cd portfolio,
     ```
 
 3. Open the `index.html` file in your browser to view the website.
