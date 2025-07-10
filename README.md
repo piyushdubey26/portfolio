@@ -42,7 +42,7 @@ Here are some of the projects I've worked on:
    - Description: ecommerce-sql-project. Just built a real-world E-Commerce Order Management SQL Project!
 This project simulates how platforms like Amazon or Flipkart manage users, orders, payments, and product stocks — using only SQL! 💻
 
- - Technologies Used: mysql,workbench.
+ - Technologies Used: mysql,workbench etc.
 
 
 ## Resume
