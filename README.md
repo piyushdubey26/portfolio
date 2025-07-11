@@ -30,11 +30,11 @@ Hey there! I'm Piyush Dubey, a dynamic third-year B.Tech CSE student at Babu Ban
 Here are some of the projects I've worked on:
 
 1. **Project Name**: [Project Link](#)
-   - Description: Brief description of the project.
+   - Description: 
    - Technologies Used: HTML, CSS, JavaScript, etc.
 
 2. **Project Name**: [Project Link](#)
-   - Description: Brief description of the project.
+   - Description:
    - Technologies Used: HTML, CSS, JavaScript, etc.
   
    - 
@@ -48,7 +48,7 @@ This project simulates how platforms like Amazon or Flipkart manage users, order
 ## Resume
 
 You can view my resume [here](resume.html).
-
+THANK YOU 
 ## Contact
 
 Feel free to reach out to me through the following channels:
