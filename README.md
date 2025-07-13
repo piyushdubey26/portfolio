@@ -17,7 +17,7 @@ Welcome to my personal portfolio website! This website showcases my skills, proj
 
 ## About Me
 
-Hey there! I'm Piyush Dubey, a dynamic third-year B.Tech CSE student at Babu Banarasi Das University in Uttar Pradesh, India. Specializing in Cloud Computing and Machine Learning, I'm passionate about leveraging technology to shape the future. My academic journey so far has been both challenging and rewarding, and I'm excited to share more about my professional work, achievements, and future goals.
+Hey there! I'm Piyush Dubey, a dynamic third-year B.Tech CSE student at Babu Banarasi Das University , India. Specializing in Cloud Computing and Machine Learning, I'm passionate about leveraging technology to shape the future. My academic journey so far has been both challenging and rewarding, and I'm excited to share more about my professional work, achievements, and future goals.
 
 ## Skills
 
@@ -25,7 +25,7 @@ Hey there! I'm Piyush Dubey, a dynamic third-year B.Tech CSE student at Babu Ban
 - **Data Science**: Predictive Modeling, Data Visualization, Statistical Analysis
 - **Machine Learning**: Machine Learning Algorithms, Data Preprocessing, Model Evaluation
 - **DATABASE**: MYSQL
-## Projects
+## Projects,
 
 Here are some of the projects I've worked on:
 
