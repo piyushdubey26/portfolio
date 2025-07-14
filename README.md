@@ -49,7 +49,7 @@ Here are some of the projects I've worked on:
 
 You can view my resume [here]
 (resume.html).
-THANK YOU 
+
 ## Contact
 
 Feel free to reach out to me through the following channels:
