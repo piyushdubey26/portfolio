@@ -47,8 +47,7 @@ Here are some of the projects I've worked on:
 
 ## Resume
 
-You can view my resume [here]
-(resume.html).
+You can view my resume [here](resume.html).
 
 ## Contact
 
