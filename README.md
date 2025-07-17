@@ -1,9 +1,11 @@
-# portfolio
-# Piyush Dubey's Portfolio
+# 🌐 Piyush Dubey's Portfolio
 
-Welcome to my personal portfolio website! This website showcases my skills, projects, and experiences as a web developer and designer.
+Welcome to my personal developer portfolio!  
+This website showcases my skills, projects, and experiences as a full-stack developer and tech enthusiast.
 
-## Table of Contents
+---
+
+## 📚 Table of Contents
 
 - [About Me](#about-me)
 - [Skills](#skills)
@@ -15,65 +17,87 @@ Welcome to my personal portfolio website! This website showcases my skills, proj
 - [Contributing](#contributing)
 - [License](#license)
 
-## About Me
+---
 
-Hey there! I'm Piyush Dubey, a dynamic third-year B.Tech CSE student at Babu Banarasi Das University , India. Specializing in Cloud Computing and Machine Learning, I'm passionate about leveraging technology to shape the future. My academic journey so far has been both challenging and rewarding, and I'm excited to share more about my professional work, achievements, and future goals.
+## 👨‍💻 About Me
 
-## Skills
+Hey there! I'm **Piyush Dubey**, a third-year B.Tech CSE student at **Babu Banarasi Das University**, India.  
+I specialize in **Cloud Computing** and **Machine Learning**, and I'm deeply passionate about using technology to solve real-world problems.
 
-- **Web Development**: HTML, CSS, JavaScript, Node.js
-- **Data Science**: Predictive Modeling, Data Visualization, Statistical Analysis
-- **Machine Learning**: Machine Learning Algorithms, Data Preprocessing, Model Evaluation
-- **DATABASE**: MYSQL
-## Projects,
+---
 
-Here are some of the projects I've worked on:
+## 🛠️ Skills
 
-1. **Project Name**: [Project Link](#)
-   - Description: 
-   - Technologies Used: HTML, CSS, JavaScript, etc.
+- **Frontend**: HTML, CSS, JavaScript, React.js  
+- **Backend**: Node.js, PHP (basic)  
+- **Database**: MySQL  
+- **Data Science & ML**: Python, Pandas, Scikit-learn, Model Evaluation  
+- **Tools**: VS Code, Git, GitHub, MySQL Workbench
 
-2. **Project Name**: [Project Link](#)
-   - Description:
-   - Technologies Used: HTML, CSS, JavaScript, etc.
-  
-   - 
-3.**Project Name**: [github.com/piyushdubey26/ecommerce-sql-project](#)
-   - Description: ecommerce-sql-project. Just built a real-world E-Commerce Order Management SQL Project!
-    This project simulates how platforms like Amazon or Flipkart manage users, orders, payments, and product stocks — using only SQL! 💻
+---
 
- - Technologies Used: mysql,workbench etc.
+## 🚀 Projects
+
+### 1. **E-Commerce Order Management SQL Project**  
+📂 [View on GitHub](https://github.com/piyushdubey26/ecommerce-sql-project)  
+- Simulates how platforms like Amazon or Flipkart manage users, orders, payments, and product stocks using SQL.
+- **Tech Used**: MySQL, Triggers, Views, Joins  
+- 📈 Includes ER diagram, sample data, real-world queries, and triggers.
+
+---
+
+### 2. **MakeMyTrip Clone (Travel Booking Website)**  
+🌐 *Private repo*  
+- Hotel booking, user login, admin dashboard, payment integration  
+- **Tech Used**: HTML, CSS, JS, PHP, MySQL
+
+---
+
+### 3. **Hospital Management System** *(In Progress)*  
+- Real-time doctor-patient chat, appointment booking, dashboards  
+- **Tech Used**: Socket.IO, Node.js, HTML/CSS, MySQL, JS
+
+---
+
+## 📄 Resume
+
+📄 You can view/download my resume [here](resume.html)  
+*(or replace with a Google Drive link or PDF if hosted externally)*
+
+---
+
+## 📬 Contact
+
+Feel free to reach out to me via:
+
+- 📧 Email: [piyushdubey447@gmail.com](mailto:piyushdubey447@gmail.com)  
+- 🔗 LinkedIn: [Piyush Dubey](https://www.linkedin.com/in/piyush-dubey-70183429a)  
+- 💻 GitHub: [piyushdubey26](https://github.com/piyushdubey26)
+
+---
+
+## 🧰 Installation
+
+To run this portfolio locally:
+
+```bash
+# Clone the repo
+git clone https://github.com/piyushdubey26/portfolio.git
+
+# Navigate into the folder
+cd portfolio
+
+# Open in browser
+open index.html  # or manually open it in your browser
 
 
-## Resume
+💡 Usage
+This website serves as a digital showcase of my development skills, academic achievements, and personal projects.
+Anyone interested in working with me or viewing my past work can explore this portfolio.
 
-You can view my resume [here](resume.html).
 
-## Contact
 
-Feel free to reach out to me through the following channels:
 
-- **Email**: [piyush@example.com](mailto:piyushdubey447@example.com)
-- **LinkedIn**: [Piyush Dubey](https://www.linkedin.com/in/piyush-dubey-70183429a)
-- **GitHub**: [piyushdubey](https://github.com/piyushdubey26)
-
-## Installation
-
-To run this project locally, follow these steps:
-
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/piyushdubey/portfolio.git
-    ```
-
-2. Navigate to the project directory:
-    ```sh
-    cd portfolio
-    ```
-
-3. Open the `index.html` file in your browser to view the website.
-
-## Usage
 
 This portfolio website is designed to showcase my work and skills. Feel free to explore the different sections, view my projects, and get in touch with me through the contact page.
 
