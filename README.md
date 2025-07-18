@@ -95,10 +95,6 @@ open index.html  # or manually open it in your browser
 This website serves as a digital showcase of my development skills, academic achievements, and personal projects.
 Anyone interested in working with me or viewing my past work can explore this portfolio.
 
-
-
-
-
 This portfolio website is designed to showcase my work and skills. Feel free to explore the different sections, view my projects, and get in touch with me through the contact page.
 
 ## Contributing
@@ -110,5 +106,16 @@ If you would like to contribute to this project, please follow these steps:
 3. Make your changes and commit them (`git commit -m 'Add your feature'`).
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Create a new Pull Request.
+
+
+---
+
+### ✅ Next Step:
+- Save this content as `README.md` in your portfolio root folder.
+- Commit it using:
+```bash
+git add README.md
+git commit -m "Improve README with full portfolio details, links, and project showcase"
+git push origin main
 
 
