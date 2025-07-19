@@ -97,6 +97,17 @@ Anyone interested in working with me or viewing my past work can explore this po
 
 This portfolio website is designed to showcase my work and skills. Feel free to explore the different sections, view my projects, and get in touch with me through the contact page.
 
+### ✅ Next Step:
+- Save this content as `README.md` in your portfolio root folder.
+- Commit it using:
+```bash
+git add README.md
+git commit -m "Improve README with full portfolio details, links, and project showcase"
+git push origin main
+
+
+
+
 ## Contributing
 
 If you would like to contribute to this project, please follow these steps:
@@ -109,13 +120,3 @@ If you would like to contribute to this project, please follow these steps:
 
 
 ---
-
-### ✅ Next Step:
-- Save this content as `README.md` in your portfolio root folder.
-- Commit it using:
-```bash
-git add README.md
-git commit -m "Improve README with full portfolio details, links, and project showcase"
-git push origin main
-
-
