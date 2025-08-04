@@ -107,6 +107,14 @@ git add README.md
 git commit -m "Improve README with full portfolio details, links, and project showcase"
 git push origin main
 ---
+### ✅ Next Step:
+- Save this content as `README.md` in your portfolio root folder.
+- Commit it using:
+```bash
+git add README.md
+git commit -m "Improve README with full portfolio details, links, and project showcase"
+git push origin main
+---
 
 
 ---
@@ -124,12 +132,4 @@ If you would like to contribute to this project, please follow these steps:
 3. Make your changes and commit them (`git commit -m 'Add your feature'`).
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Create a new Pull Request.
-### ✅ Next Step:
-- Save this content as `README.md` in your portfolio root folder.
-- Commit it using:
-```bash
-git add README.md
-git commit -m "Improve README with full portfolio details, links, and project showcase"
-git push origin main
----
 
