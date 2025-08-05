@@ -133,3 +133,10 @@ If you would like to contribute to this project, please follow these steps:
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Create a new Pull Request.
 
+### ✅ Next Steps:
+1. Save this as `README.md` in your project folder.
+2. Run:
+```bash
+git add README.md
+git commit -m "Add polished README with schema, queries, diagram, and usage"
+git push origin main
