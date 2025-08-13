@@ -102,15 +102,6 @@ This portfolio website is designed to showcase my work and skills. Feel free to 
 
 
 
-### ✅ Next Steps:
-1. Save this as `README.md` in your project folder.
-2. Run:
-```bash
-git add README.md
-git commit -m "Add polished README with schema, queries, diagram, and usage"
-git push origin main
-
-
 
 
 
@@ -132,3 +123,11 @@ git add README.md
 git commit -m "Improve README with full portfolio details, links, and project showcase"
 git push origin main
 ---
+### ✅ Next Steps:
+1. Save this as `README.md` in your project folder.
+2. Run:
+```bash
+git add README.md
+git commit -m "Add polished README with schema, queries, diagram, and usage"
+git push origin main
+
