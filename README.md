@@ -100,25 +100,6 @@ This portfolio website is designed to showcase my work and skills. Feel free to 
 ****
 
 
-### ✅ Next Step:
-- Save this content as `README.md` in your portfolio root folder.
-- Commit it using:
-```bash
-git add README.md
-git commit -m "Improve README with full portfolio details, links, and project showcase"
-git push origin main
-
-
-### ✅ Next Steps:
-1. Save this as `README.md` in your project folder.
-2. Run:
-```bash
-git add README.md
-git commit -m "Add polished README with schema, queries, diagram, and usage"
-git push origin main
-
-
-
 ## Contributing
 
 If you would like to contribute to this project, please follow these steps:
@@ -130,3 +111,12 @@ If you would like to contribute to this project, please follow these steps:
 5. Create a new Pull Request.
 
 ---
+### ✅ Next Step:
+- Save this content as `README.md` in your portfolio root folder.
+- Commit it using:
+```bash
+git add README.md
+git commit -m "Improve README with full portfolio details, links, and project showcase"
+git push origin main
+
+
