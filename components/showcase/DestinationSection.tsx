@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Terminal, Cpu, Database, Layers, ExternalLink } from "lucide-react";
+import { ArrowLeft, Terminal, Cpu, Database, Layers } from "lucide-react";
+import { ProjectsSection } from "./ProjectsSection";
 
 interface DestinationSectionProps {
   onReturnToHero: () => void;
@@ -13,37 +14,20 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
     {
       icon: Cpu,
       title: "AI & Intelligent Systems",
-      desc: "Architecting modern AI-assisted pipelines, LLM interfaces, and predictive data systems with high throughput.",
-      tech: ["Python", "TensorFlow", "FastAPI", "OpenAI APIs"],
+      desc: "Architecting modern AI-assisted pipelines, NLP algorithms, LLM interfaces, and predictive scoring systems with high throughput.",
+      tech: ["Python", "FastAPI", "NLP", "Scikit-Learn", "Gemini AI"],
     },
     {
       icon: Layers,
       title: "Full Stack Architecture",
-      desc: "Building production-grade web platforms with seamless end-to-end user experiences and type-safe systems.",
+      desc: "Building production-grade web platforms with seamless end-to-end user experiences, centralized state, and type-safe APIs.",
       tech: ["Next.js", "React", "TypeScript", "Node.js", "Tailwind CSS"],
     },
     {
       icon: Database,
       title: "Distributed Backend & DBs",
-      desc: "Designing resilient relational and NoSQL database schemas, indexing strategies, and microservices.",
-      tech: ["PostgreSQL", "MongoDB", "Redis", "Docker", "Express"],
-    },
-  ];
-
-  const featuredProjects = [
-    {
-      title: "Enterprise IPL Analytics Platform",
-      tag: "Data Engineering & Analytics",
-      description:
-        "High-performance sports analytics platform processing multi-season tournament telemetry, player KPIs, and predictive match metrics.",
-      link: "https://github.com/piyushdubey26",
-    },
-    {
-      title: "ShopSphere Ecommerce Engine",
-      tag: "Full Stack MERN Platform",
-      description:
-        "End-to-end commerce system featuring real-time inventory management, secure payments, order lifecycles, and admin telemetry.",
-      link: "https://github.com/piyushdubey26",
+      desc: "Designing resilient relational and NoSQL database schemas, dual-mode fallback caching, indexing strategies, and microservices.",
+      tech: ["MongoDB", "PostgreSQL", "Express", "Docker", "REST APIs"],
     },
   ];
 
@@ -82,8 +66,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
       </div>
 
       {/* Main Workspace Body */}
-      <div className="my-12 space-y-16">
-        {/* Intro Manifesto / About */}
+      <div className="my-12 space-y-20">
+        {/* 1. Intro Manifesto / About */}
         <div id="about" className="space-y-4 max-w-3xl scroll-mt-24">
           <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-slate-400">
             SYSTEM MISSION & OVERVIEW
@@ -92,11 +76,11 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
             Engineering robust software architectures, AI-integrated backends, and elegant digital products.
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed font-normal">
-            B.Tech Computer Science engineer with a focus on full-stack systems, data engineering, and modern web platforms. Focused on precision, scalability, and clean code craftsmanship.
+            B.Tech Computer Science engineer specializing in AI systems, full-stack web platforms, and automated workflow pipelines. Focused on clean system design, scalable backends, and high-performance user interfaces.
           </p>
         </div>
 
-        {/* Pillars / Competencies / Skills */}
+        {/* 2. Pillars / Competencies / Skills */}
         <div id="skills" className="space-y-6 scroll-mt-24">
           <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">
             <Terminal className="w-3.5 h-3.5 text-cyan-400" />
@@ -133,53 +117,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
           </div>
         </div>
 
-        {/* Featured Projects */}
-        <div id="projects" className="space-y-6 scroll-mt-24">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">
-              <Layers className="w-3.5 h-3.5 text-cyan-400" />
-              <span>FEATURED SYSTEMS</span>
-            </div>
-            <a
-              href="https://github.com/piyushdubey26"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] font-mono text-cyan-400/90 hover:text-cyan-300 flex items-center gap-1 transition-colors"
-            >
-              <span>VIEW ALL REPOSITORIES</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredProjects.map((project, idx) => (
-              <a
-                key={idx}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group p-6 rounded-lg border border-white/10 bg-white/[0.02] hover:border-white/30 hover:bg-white/[0.05] transition-all duration-300 flex flex-col justify-between space-y-4"
-              >
-                <div className="space-y-2">
-                  <span className="text-[10px] font-mono tracking-wider text-cyan-400/80 uppercase">
-                    {project.tag}
-                  </span>
-                  <h4 className="text-lg font-medium text-white group-hover:text-cyan-200 transition-colors flex items-center justify-between">
-                    <span>{project.title}</span>
-                    <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity text-white/60" />
-                  </h4>
-                  <p className="text-xs text-slate-400 leading-relaxed font-light">
-                    {project.description}
-                  </p>
-                </div>
-                <div className="text-[10px] font-mono text-white/40 group-hover:text-white/70 pt-2 flex items-center gap-1 transition-colors">
-                  <span>EXPLORE SOURCE CODE</span>
-                  <span>→</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* 3. Featured Engineering Systems / Projects Section */}
+        <ProjectsSection />
       </div>
 
       {/* Footer Telemetry / Contact */}
