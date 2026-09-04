@@ -86,7 +86,11 @@ export const Hero: React.FC = () => {
   }, [isEntered, isTransitioning, isLoading, handleEnter]);
 
   return (
-    <main className="relative min-h-screen w-full bg-[#040406] text-white overflow-hidden select-none">
+    <main
+      className={`relative min-h-screen w-full bg-[#040406] text-white ${
+        isEntered ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden select-none"
+      }`}
+    >
       {/* 1. Loading Experience */}
       <LoadingScreen isLoading={isLoading} />
 

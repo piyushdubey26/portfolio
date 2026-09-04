@@ -16,10 +16,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`group relative rounded-xl border border-white/10 bg-[#050609]/80 backdrop-blur-md p-6 sm:p-8 transition-all duration-300 hover:border-cyan-500/40 hover:bg-[#07090f]/90 hover:shadow-[0_0_35px_rgba(56,189,248,0.08)] ${
