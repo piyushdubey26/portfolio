@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Terminal, Cpu, Database, Layers } from "lucide-react";
 import { ProjectsSection } from "./ProjectsSection";
 import { AboutSection } from "./AboutSection";
+import { ContactSection } from "./ContactSection";
 
 interface DestinationSectionProps {
   onReturnToHero?: () => void;
@@ -112,36 +113,10 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
             ))}
           </div>
         </section>
-      </div>
 
-      {/* 4. CONTACT / FOOTER SECTION (#contact) */}
-      <footer id="contact" className="border-t border-white/10 mt-24 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-4 scroll-mt-28">
-        <div>PIYUSH DUBEY © {new Date().getFullYear()} // ALL RIGHTS RESERVED</div>
-        <div className="flex items-center gap-6">
-          <a
-            href="https://github.com/piyushdubey26"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors"
-          >
-            GITHUB
-          </a>
-          <a
-            href="https://linkedin.com/in/piyushdubey26"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white transition-colors"
-          >
-            LINKEDIN
-          </a>
-          <button
-            onClick={handleReturn}
-            className="hover:text-cyan-400 transition-colors"
-          >
-            [ BACK TO TOP ↑ ]
-          </button>
-        </div>
-      </footer>
+        {/* 4. CONTACT SECTION (#contact) */}
+        <ContactSection onReturnToHero={handleReturn} />
+      </div>
     </div>
   );
 };
