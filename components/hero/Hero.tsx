@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { AnimatePresence } from "framer-motion";
 import { useMousePosition } from "@/lib/useMousePosition";
 import { HeroContent } from "./HeroContent";
 import { Navigation } from "./Navigation";
@@ -20,7 +19,6 @@ export const Hero: React.FC = () => {
   const { mouse, prefersReducedMotion } = useMousePosition();
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isEntered, setIsEntered] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
 
   // Manage loading screen smoothly
@@ -29,103 +27,85 @@ export const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Ensure loader displays elegantly for at least 900ms for atmospheric immersion
+    // Ensure loader displays elegantly for atmospheric immersion
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1100);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [sceneReady]);
 
-  // ENTER transition handler
+  // Smooth ENTER transition handler: triggers camera dolly & scrolls to #projects
   const handleEnter = useCallback(() => {
-    if (isTransitioning || isEntered) return;
+    if (isTransitioning) return;
     setIsTransitioning(true);
 
-    // After 900ms cinematic dolly-in, transition into the destination workspace
-    setTimeout(() => {
-      setIsEntered(true);
-      setIsTransitioning(false);
-    }, 950);
-  }, [isTransitioning, isEntered]);
+    const targetEl = document.getElementById("projects");
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
+    }
 
-  // Return to Hero handler
-  const handleReturnToHero = useCallback(() => {
-    setIsEntered(false);
-    setIsTransitioning(false);
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 1000);
+  }, [isTransitioning]);
+
+  // Navigate directly to any section
+  const handleNavigate = useCallback((sectionId: string) => {
+    const targetEl = document.getElementById(sectionId);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
+    }
   }, []);
 
-  // Global keyboard shortcuts (Enter to enter, Escape to return)
+  // Keyboard shortcut (Enter key from hero scrolls to projects)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && !isEntered && !isTransitioning) {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      if (e.key === "Enter" && scrollY < 200 && !isTransitioning) {
         handleEnter();
-      } else if (e.key === "Escape" && isEntered) {
-        handleReturnToHero();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isEntered, isTransitioning, handleEnter, handleReturnToHero]);
-
-  // Scroll to enter interaction (subtle trackpad/wheel trigger)
-  useEffect(() => {
-    let wheelDelta = 0;
-    const handleWheel = (e: WheelEvent) => {
-      if (isEntered || isTransitioning || isLoading) return;
-      wheelDelta += e.deltaY;
-      if (wheelDelta > 160) {
-        handleEnter();
-        wheelDelta = 0;
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [isEntered, isTransitioning, isLoading, handleEnter]);
+  }, [isTransitioning, handleEnter]);
 
   return (
-    <main
-      className={`relative min-h-screen w-full bg-[#040406] text-white ${
-        isEntered ? "overflow-y-auto overflow-x-hidden" : "overflow-hidden select-none"
-      }`}
-    >
-      {/* 1. Loading Experience */}
-      <LoadingScreen isLoading={isLoading} />
-
-      {/* 2. Deep Atmospheric Void Background */}
-      <BackgroundCanvas />
-
-      {/* 3. Central 3D Identity Object Viewport */}
-      <HeroScene
-        mouse={mouse}
-        isTransitioning={isTransitioning}
-        prefersReducedMotion={prefersReducedMotion}
-        onSceneReady={handleSceneReady}
-      />
-
-      {/* 4. Top Minimal Navigation */}
+    <div className="relative min-h-screen w-full bg-[#040406] text-white overflow-x-hidden">
+      {/* 1. Permanent Fixed System Navigation Bar (Always Visible) */}
       <Navigation
         onEnterClick={handleEnter}
-        onNavigate={() => handleEnter()}
+        onNavigate={handleNavigate}
       />
 
-      {/* 5. Viewport Content Orchestration */}
-      <AnimatePresence mode="wait">
-        {!isEntered ? (
-          <HeroContent
-            key="hero-content"
-            onEnter={handleEnter}
-            isTransitioning={isTransitioning}
-          />
-        ) : (
-          <DestinationSection
-            key="destination-section"
-            onReturnToHero={handleReturnToHero}
-          />
-        )}
-      </AnimatePresence>
-    </main>
+      {/* 2. Loading Experience */}
+      <LoadingScreen isLoading={isLoading} />
+
+      {/* 3. Deep Atmospheric Void Background */}
+      <BackgroundCanvas />
+
+      {/* 4. Full-Screen 3D Hero Section */}
+      <section id="hero" className="relative min-h-screen w-full flex flex-col justify-between">
+        {/* Central 3D Identity Object Viewport */}
+        <HeroScene
+          mouse={mouse}
+          isTransitioning={isTransitioning}
+          prefersReducedMotion={prefersReducedMotion}
+          onSceneReady={handleSceneReady}
+        />
+
+        {/* Hero Typography & CTA */}
+        <HeroContent
+          onEnter={handleEnter}
+          isTransitioning={isTransitioning}
+        />
+      </section>
+
+      {/* 5. Complete Workspace & Engineering Showcase */}
+      <main className="relative z-20 w-full">
+        <DestinationSection />
+      </main>
+    </div>
   );
 };

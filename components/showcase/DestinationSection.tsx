@@ -6,7 +6,7 @@ import { ArrowLeft, Terminal, Cpu, Database, Layers } from "lucide-react";
 import { ProjectsSection } from "./ProjectsSection";
 
 interface DestinationSectionProps {
-  onReturnToHero: () => void;
+  onReturnToHero?: () => void;
 }
 
 export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturnToHero }) => {
@@ -31,26 +31,28 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
     },
   ];
 
+  const handleReturn = () => {
+    if (onReturnToHero) {
+      onReturnToHero();
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      exit={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="relative z-30 min-h-screen w-full bg-[#040406]/95 backdrop-blur-xl text-slate-200 px-6 py-16 md:py-24 max-w-6xl mx-auto flex flex-col justify-between"
-    >
-      {/* Top Header Control */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
+    <div className="relative z-30 w-full text-slate-200 px-6 py-16 md:py-24 max-w-6xl mx-auto flex flex-col justify-between">
+      {/* Top Header Workspace Status */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-12">
         <div className="flex items-center gap-3">
           <button
-            onClick={onReturnToHero}
+            onClick={handleReturn}
             className="group flex items-center gap-2 px-3 py-1.5 rounded border border-white/10 bg-white/[0.02] hover:border-white/30 hover:bg-white/[0.06] text-xs font-mono text-white/70 hover:text-white transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-white/50"
-            aria-label="Return to 3D Orbit"
+            aria-label="Return to 3D Hero"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            <span>RETURN TO ORBIT</span>
+            <span>RETURN TO TOP</span>
             <kbd className="hidden md:inline-block text-[9px] text-white/40 ml-1 px-1 border border-white/10 rounded">
-              ESC
+              TOP
             </kbd>
           </button>
           <span className="text-white/20 text-xs font-mono">/</span>
@@ -65,11 +67,14 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
         </div>
       </div>
 
-      {/* Main Workspace Body */}
-      <div className="my-12 space-y-20">
-        {/* 1. Intro Manifesto / About */}
-        <div id="about" className="space-y-4 max-w-3xl scroll-mt-24">
-          <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-slate-400">
+      {/* Main Workspace Flow */}
+      <div className="space-y-24">
+        {/* 1. PROJECTS SECTION (#projects) */}
+        <ProjectsSection />
+
+        {/* 2. ABOUT SECTION (#about) */}
+        <section id="about" className="space-y-4 max-w-3xl scroll-mt-28 border-t border-white/[0.08] pt-16">
+          <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-cyan-400">
             SYSTEM MISSION & OVERVIEW
           </div>
           <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
@@ -78,12 +83,12 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed font-normal">
             B.Tech Computer Science engineer specializing in AI systems, full-stack web platforms, and automated workflow pipelines. Focused on clean system design, scalable backends, and high-performance user interfaces.
           </p>
-        </div>
+        </section>
 
-        {/* 2. Pillars / Competencies / Skills */}
-        <div id="skills" className="space-y-6 scroll-mt-24">
-          <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">
-            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+        {/* 3. SKILLS SECTION (#skills) */}
+        <section id="skills" className="space-y-6 scroll-mt-28 border-t border-white/[0.08] pt-16">
+          <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-cyan-400 uppercase">
+            <Terminal className="w-3.5 h-3.5" />
             <span>ENGINEERING CAPABILITIES</span>
           </div>
 
@@ -115,14 +120,11 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
               </div>
             ))}
           </div>
-        </div>
-
-        {/* 3. Featured Engineering Systems / Projects Section */}
-        <ProjectsSection />
+        </section>
       </div>
 
-      {/* Footer Telemetry / Contact */}
-      <div id="contact" className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-4 scroll-mt-10">
+      {/* 4. CONTACT / FOOTER SECTION (#contact) */}
+      <footer id="contact" className="border-t border-white/10 mt-24 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-4 scroll-mt-28">
         <div>PIYUSH DUBEY © {new Date().getFullYear()} // ALL RIGHTS RESERVED</div>
         <div className="flex items-center gap-6">
           <a
@@ -142,13 +144,13 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
             LINKEDIN
           </a>
           <button
-            onClick={onReturnToHero}
+            onClick={handleReturn}
             className="hover:text-cyan-400 transition-colors"
           >
-            [ RE-ENTER 3D HERO ]
+            [ BACK TO TOP ↑ ]
           </button>
         </div>
-      </div>
-    </motion.div>
+      </footer>
+    </div>
   );
 };

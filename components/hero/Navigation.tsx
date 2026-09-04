@@ -11,7 +11,7 @@ interface NavigationProps {
 
 export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeItem, setActiveItem] = useState<string>("projects");
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -21,7 +21,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     { id: "contact", label: "CONTACT" },
   ];
 
-  // High-performance throttled scroll listener using requestAnimationFrame
+  // 1. Scroll listener for glass navbar transition and Hero boundary check
   useEffect(() => {
     let ticking = false;
 
@@ -29,7 +29,13 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY || document.documentElement.scrollTop;
-          setIsScrolled(scrollY > 25);
+          setIsScrolled(scrollY > 20);
+
+          // At top of page (Hero view), clear active section
+          if (scrollY < 180) {
+            setActiveSection(null);
+          }
+
           ticking = false;
         });
         ticking = true;
@@ -37,38 +43,47 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    // Initial check on mount
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // IntersectionObserver for active section highlighting when sections are on page
+  // 2. IntersectionObserver for accurate Active Section detection
   useEffect(() => {
-    const sectionElements = navItems
-      .map((item) => document.getElementById(item.id))
-      .filter((el): el is HTMLElement => el !== null);
+    const observerOptions: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "-25% 0px -40% 0px", // Trigger when section is in central reading area
+      threshold: 0.15,
+    };
 
-    if (sectionElements.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveItem(entry.target.id);
+    const handleIntersect: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // If we are scrolled past the hero threshold, set active item
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          if (scrollY >= 180) {
+            setActiveSection(entry.target.id);
           }
-        });
-      },
-      { rootMargin: "-30% 0px -50% 0px", threshold: 0.1 }
-    );
+        }
+      });
+    };
 
-    sectionElements.forEach((el) => observer.observe(el));
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    navItems.forEach((item) => {
+      const element = document.getElementById(item.id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
     return () => observer.disconnect();
   }, []);
 
+  // 3. Smooth scroll to section handler
   const handleNavClick = useCallback(
     (id: string) => {
-      setActiveItem(id);
+      setActiveSection(id);
       setIsMobileMenuOpen(false);
 
       const targetEl = document.getElementById(id);
@@ -85,16 +100,24 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     [onNavigate, onEnterClick]
   );
 
+  // 4. Scroll to top handler (Hero)
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setActiveSection(null);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto ${
         isScrolled
-          ? "bg-[#040406]/80 backdrop-blur-md border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.6)] py-3.5"
+          ? "bg-[#040406]/85 backdrop-blur-md border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.6)] py-3.5"
           : "bg-transparent border-b border-transparent py-5 md:py-6"
       }`}
     >
       {/* ─────────────────────────────────────────────────────────────
-          TOP SCANNING LIGHT EFFECT (Elegant Cyan Beam LEFT → RIGHT)
+          TOP CONTINUOUS SCANNING LIGHT EFFECT (LEFT → RIGHT)
           ───────────────────────────────────────────────────────────── */}
       <div
         className={`absolute top-0 left-0 w-full h-[1.5px] overflow-hidden pointer-events-none transition-opacity duration-500 ${
@@ -102,14 +125,12 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         }`}
         aria-hidden="true"
       >
-        {/* Subtle static ambient line */}
+        {/* Subtle static hairline */}
         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
 
-        {/* Continuous moving cyan light beam */}
+        {/* Dynamic moving beam */}
         <div className="animate-scan-light absolute top-0 left-0 w-1/3 h-full">
-          {/* Intense core beam */}
           <div className="w-full h-full bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
-          {/* Soft volumetric glow halo */}
           <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-300/60 to-transparent blur-[1px]" />
         </div>
       </div>
@@ -120,10 +141,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         <div className="flex items-center gap-4">
           <a
             href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={handleLogoClick}
             className="group relative flex items-center gap-2.5 px-3 py-1.5 rounded-md border border-white/10 bg-black/40 backdrop-blur-md hover:border-white/30 hover:bg-white/[0.04] transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
             aria-label="Piyush Dubey Home"
           >
@@ -147,28 +165,30 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         >
           <ul className="flex items-center gap-6 lg:gap-8 list-none">
             {navItems.map((item) => {
-              const isActive = activeItem === item.id;
+              const isActive = activeSection === item.id;
               return (
-                <li key={item.id}>
+                <li key={item.id} className="relative">
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={`group relative py-1 text-[11px] font-mono tracking-[0.2em] transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 ${
                       isActive
-                        ? "text-white font-medium"
+                        ? "text-cyan-300 font-semibold"
                         : "text-white/60 hover:text-white"
                     }`}
                     aria-current={isActive ? "page" : undefined}
                   >
                     <span>{item.label}</span>
 
-                    {/* Active & Hover indicator line */}
-                    <span
-                      className={`absolute bottom-0 left-0 h-[1.5px] transition-all duration-300 ${
-                        isActive
-                          ? "w-full bg-cyan-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]"
-                          : "w-0 bg-white/70 group-hover:w-full"
-                      }`}
-                    />
+                    {/* Smooth sliding active cyan indicator */}
+                    {isActive ? (
+                      <motion.span
+                        layoutId="activeNavIndicator"
+                        className="absolute bottom-0 left-0 w-full h-[1.5px] bg-cyan-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]"
+                        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                    ) : (
+                      <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-white/40 transition-all duration-300 group-hover:w-full" />
+                    )}
                   </button>
                 </li>
               );
@@ -219,7 +239,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
           >
             <ul className="flex flex-col gap-4 list-none pt-2">
               {navItems.map((item) => {
-                const isActive = activeItem === item.id;
+                const isActive = activeSection === item.id;
                 return (
                   <li key={item.id}>
                     <button
