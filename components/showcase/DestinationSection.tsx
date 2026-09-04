@@ -42,7 +42,7 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
   };
 
   return (
-    <div className="relative z-30 w-full text-slate-200 px-6 py-16 md:py-24 max-w-6xl mx-auto flex flex-col justify-between">
+    <div className="relative z-30 w-full text-slate-200 px-6 pt-24 md:pt-32 pb-16 md:pb-24 max-w-6xl mx-auto flex flex-col justify-between">
       {/* Top Header Workspace Status */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-12">
         <div className="flex items-center gap-3">
@@ -78,7 +78,7 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
         <AboutSection />
 
         {/* 3. SKILLS SECTION (#skills) */}
-        <section id="skills" className="space-y-6 scroll-mt-28 border-t border-white/[0.08] pt-16">
+        <section id="skills" className="space-y-6 scroll-mt-32 border-t border-white/[0.08] pt-16">
           <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-cyan-400 uppercase">
             <Terminal className="w-3.5 h-3.5" />
             <span>ENGINEERING CAPABILITIES</span>

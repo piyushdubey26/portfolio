@@ -7,7 +7,7 @@ import { ProjectCard } from "./ProjectCard";
 
 export const ProjectsSection: React.FC = () => {
   return (
-    <section id="projects" className="space-y-8 scroll-mt-24">
+    <section id="projects" className="space-y-8 scroll-mt-32 pt-2">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">

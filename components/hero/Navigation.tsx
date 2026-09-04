@@ -29,10 +29,10 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollY = window.scrollY || document.documentElement.scrollTop;
-          setIsScrolled(scrollY > 20);
+          setIsScrolled(scrollY > 15);
 
-          // At top of page (Hero view), clear active section
-          if (scrollY < 180) {
+          // In the top Hero area, clear active navigation indicator
+          if (scrollY < 200) {
             setActiveSection(null);
           }
 
@@ -52,16 +52,15 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
   useEffect(() => {
     const observerOptions: IntersectionObserverInit = {
       root: null,
-      rootMargin: "-25% 0px -40% 0px", // Trigger when section is in central reading area
-      threshold: 0.15,
+      rootMargin: "-25% 0px -45% 0px", // Accurate detection window below fixed navbar
+      threshold: 0.1,
     };
 
     const handleIntersect: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // If we are scrolled past the hero threshold, set active item
           const scrollY = window.scrollY || document.documentElement.scrollTop;
-          if (scrollY >= 180) {
+          if (scrollY >= 200) {
             setActiveSection(entry.target.id);
           }
         }
@@ -80,7 +79,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     return () => observer.disconnect();
   }, []);
 
-  // 3. Smooth scroll to section handler
+  // 3. Smooth scroll to section handler accounting for navbar height offset
   const handleNavClick = useCallback(
     (id: string) => {
       setActiveSection(id);
@@ -110,10 +109,8 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto ${
-        isScrolled
-          ? "bg-[#040406]/85 backdrop-blur-md border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.6)] py-3.5"
-          : "bg-transparent border-b border-transparent py-5 md:py-6"
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto bg-[#05080c]/85 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.8),0_1px_0_rgba(56,189,248,0.06)] ${
+        isScrolled ? "py-3 md:py-3.5" : "py-4 md:py-5"
       }`}
     >
       {/* ─────────────────────────────────────────────────────────────
@@ -121,12 +118,12 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
           ───────────────────────────────────────────────────────────── */}
       <div
         className={`absolute top-0 left-0 w-full h-[1.5px] overflow-hidden pointer-events-none transition-opacity duration-500 ${
-          isScrolled ? "opacity-95" : "opacity-35"
+          isScrolled ? "opacity-95" : "opacity-60"
         }`}
         aria-hidden="true"
       >
         {/* Subtle static hairline */}
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
 
         {/* Dynamic moving beam */}
         <div className="animate-scan-light absolute top-0 left-0 w-1/3 h-full">
@@ -142,7 +139,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
           <a
             href="#"
             onClick={handleLogoClick}
-            className="group relative flex items-center gap-2.5 px-3 py-1.5 rounded-md border border-white/10 bg-black/40 backdrop-blur-md hover:border-white/30 hover:bg-white/[0.04] transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
+            className="group relative flex items-center gap-2.5 px-3 py-1.5 rounded-md border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/40 hover:bg-cyan-950/20 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
             aria-label="Piyush Dubey Home"
           >
             <span className="font-mono text-xs font-semibold tracking-widest text-white/90 group-hover:text-white transition-colors">
@@ -200,7 +197,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
             href="https://github.com/piyushdubey26"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-mono tracking-wider text-white/50 border border-white/10 rounded hover:text-white hover:border-white/30 hover:bg-white/[0.04] transition-all duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
+            className="flex items-center gap-1.5 px-3 py-1 text-[10px] font-mono tracking-wider text-white/50 border border-white/10 rounded hover:text-white hover:border-cyan-500/40 hover:bg-cyan-950/20 transition-all duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
             aria-label="GitHub Profile (opens in new tab)"
           >
             <span>GH</span>
@@ -212,7 +209,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         <div className="flex items-center gap-3 md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-md border border-white/10 bg-white/[0.02] text-white/70 hover:text-white hover:border-white/30 transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
+            className="p-2 rounded-md border border-white/10 bg-white/[0.02] text-white/70 hover:text-white hover:border-cyan-500/40 transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
             aria-label="Toggle navigation menu"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-nav-menu"
@@ -235,7 +232,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden px-6 pt-3 pb-6 border-b border-white/10 bg-[#040406]/95 backdrop-blur-2xl shadow-2xl"
+            className="md:hidden px-6 pt-3 pb-6 border-b border-white/10 bg-[#05080c]/95 backdrop-blur-2xl shadow-2xl"
           >
             <ul className="flex flex-col gap-4 list-none pt-2">
               {navItems.map((item) => {

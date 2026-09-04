@@ -20,7 +20,7 @@ export const AboutSection: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="space-y-10 scroll-mt-28 border-t border-white/[0.08] pt-16">
+    <section id="about" className="space-y-10 scroll-mt-32 border-t border-white/[0.08] pt-16">
       {/* Section Header */}
       <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-cyan-400 uppercase">
         <User className="w-4 h-4" />

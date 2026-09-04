@@ -78,7 +78,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onReturnToHero }
   };
 
   return (
-    <section id="contact" className="space-y-12 scroll-mt-28 border-t border-white/[0.08] pt-16">
+    <section id="contact" className="space-y-12 scroll-mt-32 border-t border-white/[0.08] pt-16">
       {/* Section Header */}
       <div className="space-y-3">
         <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-cyan-400 uppercase">
