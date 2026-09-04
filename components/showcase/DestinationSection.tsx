@@ -83,8 +83,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
 
       {/* Main Workspace Body */}
       <div className="my-12 space-y-16">
-        {/* Intro Manifesto */}
-        <div className="space-y-4 max-w-3xl">
+        {/* Intro Manifesto / About */}
+        <div id="about" className="space-y-4 max-w-3xl scroll-mt-24">
           <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-slate-400">
             SYSTEM MISSION & OVERVIEW
           </div>
@@ -96,8 +96,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
           </p>
         </div>
 
-        {/* Pillars / Competencies */}
-        <div className="space-y-6">
+        {/* Pillars / Competencies / Skills */}
+        <div id="skills" className="space-y-6 scroll-mt-24">
           <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">
             <Terminal className="w-3.5 h-3.5 text-cyan-400" />
             <span>ENGINEERING CAPABILITIES</span>
@@ -133,8 +133,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
           </div>
         </div>
 
-        {/* Featured Projects Teaser */}
-        <div className="space-y-6">
+        {/* Featured Projects */}
+        <div id="projects" className="space-y-6 scroll-mt-24">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs font-mono tracking-widest text-slate-400 uppercase">
               <Layers className="w-3.5 h-3.5 text-cyan-400" />
@@ -182,8 +182,8 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
         </div>
       </div>
 
-      {/* Footer Telemetry */}
-      <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-4">
+      {/* Footer Telemetry / Contact */}
+      <div id="contact" className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-4 scroll-mt-10">
         <div>PIYUSH DUBEY © {new Date().getFullYear()} // ALL RIGHTS RESERVED</div>
         <div className="flex items-center gap-6">
           <a
