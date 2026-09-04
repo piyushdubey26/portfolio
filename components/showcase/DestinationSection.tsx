@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Terminal, Cpu, Database, Layers } from "lucide-react";
 import { ProjectsSection } from "./ProjectsSection";
+import { AboutSection } from "./AboutSection";
 
 interface DestinationSectionProps {
   onReturnToHero?: () => void;
@@ -73,17 +74,7 @@ export const DestinationSection: React.FC<DestinationSectionProps> = ({ onReturn
         <ProjectsSection />
 
         {/* 2. ABOUT SECTION (#about) */}
-        <section id="about" className="space-y-4 max-w-3xl scroll-mt-28 border-t border-white/[0.08] pt-16">
-          <div className="text-[11px] font-mono uppercase tracking-[0.25em] text-cyan-400">
-            SYSTEM MISSION & OVERVIEW
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
-            Engineering robust software architectures, AI-integrated backends, and elegant digital products.
-          </h2>
-          <p className="text-sm sm:text-base text-slate-400 leading-relaxed font-normal">
-            B.Tech Computer Science engineer specializing in AI systems, full-stack web platforms, and automated workflow pipelines. Focused on clean system design, scalable backends, and high-performance user interfaces.
-          </p>
-        </section>
+        <AboutSection />
 
         {/* 3. SKILLS SECTION (#skills) */}
         <section id="skills" className="space-y-6 scroll-mt-28 border-t border-white/[0.08] pt-16">
