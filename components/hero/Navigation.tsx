@@ -21,21 +21,69 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     { id: "contact", label: "CONTACT" },
   ];
 
-  // 1. Scroll listener for glass navbar transition and Hero boundary check
+  // ─────────────────────────────────────────────────────────────────
+  // AUTOMATIC SECTION SCROLL DETECTION ENGINE
+  // ─────────────────────────────────────────────────────────────────
   useEffect(() => {
     let ticking = false;
+    const sectionIds = ["projects", "about", "skills", "contact"];
+
+    const calculateActiveSection = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+
+      // 1. Top of page / Hero area
+      if (scrollY < 220) {
+        setIsScrolled(scrollY > 15);
+        setActiveSection(null);
+        return;
+      }
+
+      setIsScrolled(true);
+
+      // 2. Reached bottom of document -> activate contact
+      if (windowHeight + scrollY >= docHeight - 60) {
+        setActiveSection("contact");
+        return;
+      }
+
+      // 3. Dominant viewport section calculation
+      // Trigger zone is situated comfortably below the fixed navbar (~38% of viewport height)
+      const triggerY = windowHeight * 0.38;
+      let currentSection: string | null = null;
+
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i];
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Check if the section's top has reached the trigger line and bottom is still on screen
+          if (rect.top <= triggerY && rect.bottom > 80) {
+            currentSection = id;
+            break;
+          }
+        }
+      }
+
+      // Fallback for entering first section (projects)
+      if (!currentSection && scrollY >= 220) {
+        const projectsEl = document.getElementById("projects");
+        if (projectsEl) {
+          const rect = projectsEl.getBoundingClientRect();
+          if (rect.top < windowHeight * 0.75 && rect.bottom > 0) {
+            currentSection = "projects";
+          }
+        }
+      }
+
+      setActiveSection(currentSection);
+    };
 
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY || document.documentElement.scrollTop;
-          setIsScrolled(scrollY > 15);
-
-          // In the top Hero area, clear active navigation indicator
-          if (scrollY < 200) {
-            setActiveSection(null);
-          }
-
+          calculateActiveSection();
           ticking = false;
         });
         ticking = true;
@@ -43,43 +91,18 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener("resize", handleScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Initial check on mount/load
+    calculateActiveSection();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
-  // 2. IntersectionObserver for accurate Active Section detection
-  useEffect(() => {
-    const observerOptions: IntersectionObserverInit = {
-      root: null,
-      rootMargin: "-25% 0px -45% 0px", // Accurate detection window below fixed navbar
-      threshold: 0.1,
-    };
-
-    const handleIntersect: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const scrollY = window.scrollY || document.documentElement.scrollTop;
-          if (scrollY >= 200) {
-            setActiveSection(entry.target.id);
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-
-    navItems.forEach((item) => {
-      const element = document.getElementById(item.id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // 3. Smooth scroll to section handler accounting for navbar height offset
+  // Smooth scroll to section handler
   const handleNavClick = useCallback(
     (id: string) => {
       setActiveSection(id);
@@ -99,7 +122,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     [onNavigate, onEnterClick]
   );
 
-  // 4. Scroll to top handler (Hero)
+  // Scroll to top handler (Hero)
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setActiveSection(null);
