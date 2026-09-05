@@ -15,7 +15,7 @@ export const ProjectsSection: React.FC = () => {
           <span>FEATURED ENGINEERING SYSTEMS</span>
         </div>
         <a
-          href="https://github.com/piyushdubey26?tab=repositories"
+          href="https://github.com/piyushdubey26"
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs font-mono text-cyan-400/90 hover:text-cyan-300 flex items-center gap-1.5 transition-colors group"
