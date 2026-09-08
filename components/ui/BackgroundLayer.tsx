@@ -9,16 +9,19 @@ interface BackgroundLayerProps {
 export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Auto-play video loop when in Projects, pause when away
+  // Active when on any showcase section (projects, about, skills, contact)
+  const isShowcaseActive = Boolean(activeSection);
+
+  // Auto-play video loop when in showcase sections, pause when at Hero
   useEffect(() => {
     if (videoRef.current) {
-      if (activeSection === "projects") {
+      if (isShowcaseActive) {
         videoRef.current.play().catch(() => {});
       } else {
         videoRef.current.pause();
       }
     }
-  }, [activeSection]);
+  }, [isShowcaseActive]);
 
   return (
     <div
@@ -26,15 +29,16 @@ export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection 
       aria-hidden="true"
     >
       {/* ─────────────────────────────────────────────────────────────
-          1. PROJECTS SECTION BACKGROUND (3D Interactive Video Loop)
-          STRICTLY the video ONLY — no static image poster or fallback image.
+          3D INTERACTIVE VIDEO BACKGROUND (United Carriers)
+          Active and clearly visible across PROJECTS, ABOUT, SKILLS, and CONTACT.
+          Fades out to 0 opacity at Hero (top of page).
           ───────────────────────────────────────────────────────────── */}
       <div
         className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-          activeSection === "projects" ? "opacity-100" : "opacity-0"
+          isShowcaseActive ? "opacity-100" : "opacity-0"
         }`}
       >
-        {/* Pure 3D Video Loop */}
+        {/* Pure 3D Loop Video with High Clarity & Coverage */}
         <video
           ref={videoRef}
           autoPlay
@@ -47,74 +51,18 @@ export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection 
           <source src="/backgrounds/projects-bg.mp4" type="video/mp4" />
         </video>
 
-        {/* Cinematic Translucent Dark Wash for High UI Readability */}
-        <div className="absolute inset-0 bg-[#040406]/75 backdrop-brightness-[0.85]" />
+        {/* Balanced Translucent Dark Wash for High Visibility & Readability */}
+        <div className="absolute inset-0 bg-[#040406]/50 backdrop-brightness-[0.95]" />
 
         {/* Seamless Vertical Gradient Feathering (Navbar & Section Blend) */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040406] via-transparent to-[#040406]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#040406]/80 via-transparent to-[#040406]/80" />
 
         {/* Subtle Radial Vignette */}
-        <div className="absolute inset-0 bg-radial-vignette opacity-80" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-40" />
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. ABOUT SECTION BACKGROUND (Ready for Image 2)
-          ───────────────────────────────────────────────────────────── */}
-      <div
-        className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-          activeSection === "about" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/backgrounds/about-bg.png')",
-          }}
-        />
-        <div className="absolute inset-0 bg-[#040406]/75" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040406] via-transparent to-[#040406]" />
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          3. SKILLS SECTION BACKGROUND (Ready for Image 3)
-          ───────────────────────────────────────────────────────────── */}
-      <div
-        className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-          activeSection === "skills" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/backgrounds/skills-bg.png')",
-          }}
-        />
-        <div className="absolute inset-0 bg-[#040406]/75" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040406] via-transparent to-[#040406]" />
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          4. CONTACT SECTION BACKGROUND (Ready for Image 4)
-          ───────────────────────────────────────────────────────────── */}
-      <div
-        className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-          activeSection === "contact" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/backgrounds/contact-bg.png')",
-          }}
-        />
-        <div className="absolute inset-0 bg-[#040406]/75" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#040406] via-transparent to-[#040406]" />
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          5. GLOBAL ATMOSPHERIC HUD MESH (Vignette & Noise)
-          ───────────────────────────────────────────────────────────── */}
-      <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay" />
+      {/* Global subtle atmospheric HUD mesh */}
+      <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay" />
     </div>
   );
 };
