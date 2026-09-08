@@ -9,7 +9,7 @@ interface BackgroundLayerProps {
 export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Play video smoothly when in Projects, pause when in other sections to conserve GPU/CPU
+  // Auto-play video loop when in Projects, pause when away
   useEffect(() => {
     if (videoRef.current) {
       if (activeSection === "projects") {
@@ -22,19 +22,19 @@ export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection 
 
   return (
     <div
-      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none bg-[#040406]"
       aria-hidden="true"
     >
       {/* ─────────────────────────────────────────────────────────────
-          1. PROJECTS SECTION BACKGROUND (3D Interactive Hero / United Carriers Video)
-          Active ONLY when viewing #projects; completely hidden on Hero, About, Skills, Contact.
+          1. PROJECTS SECTION BACKGROUND (3D Interactive Video Loop)
+          STRICTLY the video ONLY — no static image poster or fallback image.
           ───────────────────────────────────────────────────────────── */}
       <div
         className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
           activeSection === "projects" ? "opacity-100" : "opacity-0"
         }`}
       >
-        {/* Cinematic 3D Loop Video Background */}
+        {/* Pure 3D Video Loop */}
         <video
           ref={videoRef}
           autoPlay
@@ -42,19 +42,10 @@ export const BackgroundLayer: React.FC<BackgroundLayerProps> = ({ activeSection 
           muted
           playsInline
           preload="auto"
-          poster="/backgrounds/projects-bg.png"
           className="absolute inset-0 w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out"
         >
           <source src="/backgrounds/projects-bg.mp4" type="video/mp4" />
         </video>
-
-        {/* Fallback Static Image Layer (in case video fails to load or on low-power devices) */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat -z-10"
-          style={{
-            backgroundImage: "url('/backgrounds/projects-bg.png')",
-          }}
-        />
 
         {/* Cinematic Translucent Dark Wash for High UI Readability */}
         <div className="absolute inset-0 bg-[#040406]/75 backdrop-brightness-[0.85]" />
