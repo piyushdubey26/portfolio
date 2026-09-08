@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useMousePosition } from "@/lib/useMousePosition";
+import { useActiveSection } from "@/lib/useActiveSection";
 import { HeroContent } from "./HeroContent";
 import { Navigation } from "./Navigation";
 import { LoadingScreen } from "./LoadingScreen";
@@ -18,10 +19,10 @@ const HeroScene = dynamic(
 
 export const Hero: React.FC = () => {
   const { mouse, prefersReducedMotion } = useMousePosition();
+  const { activeSection, isScrolled, setManualSection } = useActiveSection();
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Manage loading screen smoothly
   const handleSceneReady = useCallback(() => {
@@ -41,6 +42,7 @@ export const Hero: React.FC = () => {
   const handleEnter = useCallback(() => {
     if (isTransitioning) return;
     setIsTransitioning(true);
+    setManualSection("projects");
 
     const targetEl = document.getElementById("projects");
     if (targetEl) {
@@ -50,15 +52,19 @@ export const Hero: React.FC = () => {
     setTimeout(() => {
       setIsTransitioning(false);
     }, 1000);
-  }, [isTransitioning]);
+  }, [isTransitioning, setManualSection]);
 
   // Navigate directly to any section
-  const handleNavigate = useCallback((sectionId: string) => {
-    const targetEl = document.getElementById(sectionId);
-    if (targetEl) {
-      targetEl.scrollIntoView({ behavior: "smooth" });
-    }
-  }, []);
+  const handleNavigate = useCallback(
+    (sectionId: string) => {
+      setManualSection(sectionId);
+      const targetEl = document.getElementById(sectionId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    [setManualSection]
+  );
 
   // Keyboard shortcut (Enter key from hero scrolls to projects)
   useEffect(() => {
@@ -77,9 +83,11 @@ export const Hero: React.FC = () => {
     <div className="relative min-h-screen w-full bg-[#040406] text-white overflow-x-hidden">
       {/* 1. Permanent Fixed System Navigation Bar (Always Visible) */}
       <Navigation
+        activeSection={activeSection}
+        isScrolled={isScrolled}
         onEnterClick={handleEnter}
         onNavigate={handleNavigate}
-        onSectionChange={setActiveSection}
+        onSectionChange={setManualSection}
       />
 
       {/* 2. Loading Experience */}

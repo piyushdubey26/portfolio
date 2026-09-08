@@ -5,19 +5,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 interface NavigationProps {
+  activeSection?: string | null;
+  isScrolled?: boolean;
   onEnterClick?: () => void;
   onNavigate?: (section: string) => void;
   onSectionChange?: (section: string | null) => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
+  activeSection: propActiveSection,
+  isScrolled: propIsScrolled,
   onEnterClick,
   onNavigate,
   onSectionChange,
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [internalScrolled, setInternalScrolled] = useState(false);
+  const [internalActiveSection, setInternalActiveSection] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const activeSection = propActiveSection !== undefined ? propActiveSection : internalActiveSection;
+  const isScrolled = propIsScrolled !== undefined ? propIsScrolled : internalScrolled;
 
   const navItems = [
     { id: "projects", label: "PROJECTS" },
@@ -28,7 +35,7 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   const updateSectionState = useCallback(
     (section: string | null) => {
-      setActiveSection(section);
+      setInternalActiveSection(section);
       if (onSectionChange) {
         onSectionChange(section);
       }
@@ -48,7 +55,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
-      setIsScrolled(scrollY > 15);
+      setInternalScrolled(scrollY > 15);
 
       // 1. Top of page / Hero area
       // If Hero is still occupying the upper viewport, we are strictly on Home (Hero)
