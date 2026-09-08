@@ -7,9 +7,14 @@ import { Menu, X } from "lucide-react";
 interface NavigationProps {
   onEnterClick?: () => void;
   onNavigate?: (section: string) => void;
+  onSectionChange?: (section: string | null) => void;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate }) => {
+export const Navigation: React.FC<NavigationProps> = ({
+  onEnterClick,
+  onNavigate,
+  onSectionChange,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,6 +25,16 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
     { id: "skills", label: "SKILLS" },
     { id: "contact", label: "CONTACT" },
   ];
+
+  const updateSectionState = useCallback(
+    (section: string | null) => {
+      setActiveSection(section);
+      if (onSectionChange) {
+        onSectionChange(section);
+      }
+    },
+    [onSectionChange]
+  );
 
   // ─────────────────────────────────────────────────────────────────
   // AUTOMATIC SECTION SCROLL DETECTION ENGINE
@@ -36,7 +51,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
       // 1. Top of page / Hero area
       if (scrollY < 220) {
         setIsScrolled(scrollY > 15);
-        setActiveSection(null);
+        updateSectionState(null);
         return;
       }
 
@@ -44,7 +59,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
 
       // 2. Reached bottom of document -> activate contact
       if (windowHeight + scrollY >= docHeight - 60) {
-        setActiveSection("contact");
+        updateSectionState("contact");
         return;
       }
 
@@ -77,7 +92,7 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         }
       }
 
-      setActiveSection(currentSection);
+      updateSectionState(currentSection);
     };
 
     const handleScroll = () => {
@@ -100,12 +115,12 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [updateSectionState]);
 
   // Smooth scroll to section handler
   const handleNavClick = useCallback(
     (id: string) => {
-      setActiveSection(id);
+      updateSectionState(id);
       setIsMobileMenuOpen(false);
 
       const targetEl = document.getElementById(id);
@@ -119,13 +134,13 @@ export const Navigation: React.FC<NavigationProps> = ({ onEnterClick, onNavigate
         onEnterClick();
       }
     },
-    [onNavigate, onEnterClick]
+    [onNavigate, onEnterClick, updateSectionState]
   );
 
   // Scroll to top handler (Hero)
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setActiveSection(null);
+    updateSectionState(null);
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };

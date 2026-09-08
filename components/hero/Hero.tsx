@@ -7,6 +7,7 @@ import { HeroContent } from "./HeroContent";
 import { Navigation } from "./Navigation";
 import { LoadingScreen } from "./LoadingScreen";
 import { BackgroundCanvas } from "@/components/ui/BackgroundCanvas";
+import { BackgroundLayer } from "@/components/ui/BackgroundLayer";
 import { DestinationSection } from "@/components/showcase/DestinationSection";
 
 // Dynamically import Three.js Scene with SSR disabled for optimal WebGL performance
@@ -20,6 +21,7 @@ export const Hero: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Manage loading screen smoothly
   const handleSceneReady = useCallback(() => {
@@ -77,6 +79,7 @@ export const Hero: React.FC = () => {
       <Navigation
         onEnterClick={handleEnter}
         onNavigate={handleNavigate}
+        onSectionChange={setActiveSection}
       />
 
       {/* 2. Loading Experience */}
@@ -85,7 +88,10 @@ export const Hero: React.FC = () => {
       {/* 3. Deep Atmospheric Void Background */}
       <BackgroundCanvas />
 
-      {/* 4. Full-Screen 3D Hero Section */}
+      {/* 4. Cinematic Multi-Section Background Layer (Smooth Crossfade) */}
+      <BackgroundLayer activeSection={activeSection} />
+
+      {/* 5. Full-Screen 3D Hero Section */}
       <section id="hero" className="relative min-h-screen w-full flex flex-col justify-between">
         {/* Central 3D Identity Object Viewport */}
         <HeroScene
@@ -102,7 +108,7 @@ export const Hero: React.FC = () => {
         />
       </section>
 
-      {/* 5. Complete Workspace & Engineering Showcase */}
+      {/* 6. Complete Workspace & Engineering Showcase */}
       <main className="relative z-20 w-full">
         <DestinationSection />
       </main>
