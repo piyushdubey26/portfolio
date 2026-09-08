@@ -48,14 +48,22 @@ export const Navigation: React.FC<NavigationProps> = ({
       const windowHeight = window.innerHeight;
       const docHeight = document.documentElement.scrollHeight;
 
+      setIsScrolled(scrollY > 15);
+
       // 1. Top of page / Hero area
-      if (scrollY < 220) {
-        setIsScrolled(scrollY > 15);
+      // If Hero is still occupying the upper viewport, we are strictly on Home (Hero)
+      const triggerY = windowHeight * 0.4;
+      const heroEl = document.getElementById("hero");
+      if (heroEl) {
+        const heroRect = heroEl.getBoundingClientRect();
+        if (heroRect.bottom > triggerY || scrollY < 200) {
+          updateSectionState(null);
+          return;
+        }
+      } else if (scrollY < 200) {
         updateSectionState(null);
         return;
       }
-
-      setIsScrolled(true);
 
       // 2. Reached bottom of document -> activate contact
       if (windowHeight + scrollY >= docHeight - 60) {
@@ -64,8 +72,6 @@ export const Navigation: React.FC<NavigationProps> = ({
       }
 
       // 3. Dominant viewport section calculation
-      // Trigger zone is situated comfortably below the fixed navbar (~38% of viewport height)
-      const triggerY = windowHeight * 0.38;
       let currentSection: string | null = null;
 
       for (let i = sectionIds.length - 1; i >= 0; i--) {
@@ -73,21 +79,10 @@ export const Navigation: React.FC<NavigationProps> = ({
         const el = document.getElementById(id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          // Check if the section's top has reached the trigger line and bottom is still on screen
+          // Check if section top has reached trigger line and bottom is still visible
           if (rect.top <= triggerY && rect.bottom > 80) {
             currentSection = id;
             break;
-          }
-        }
-      }
-
-      // Fallback for entering first section (projects)
-      if (!currentSection && scrollY >= 220) {
-        const projectsEl = document.getElementById("projects");
-        if (projectsEl) {
-          const rect = projectsEl.getBoundingClientRect();
-          if (rect.top < windowHeight * 0.75 && rect.bottom > 0) {
-            currentSection = "projects";
           }
         }
       }
