@@ -11,7 +11,7 @@ export interface ContactConfig {
 export const contactInfo: ContactConfig = {
   github: "https://github.com/piyushdubey26",
   githubHandle: "@piyushdubey26",
-  linkedin: "https://linkedin.com/in/piyushdubey26",
+  linkedin: "https://www.linkedin.com/in/piyush-dubey-70183429a",
   linkedinName: "Piyush Dubey",
   email: "piyushdubey447@gmail.com",
   phone: "+919696261063",
