@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Camera, X, RotateCcw, User, CheckCircle2 } from "lucide-react";
 import {
@@ -19,10 +20,12 @@ export const ProfileAvatar: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load stored profile photo from localStorage on mount
+  // Set mounted flag for portal and load stored profile photo from localStorage
   useEffect(() => {
+    setIsMounted(true);
     const stored = getStoredProfilePhoto();
     if (stored && stored !== DEFAULT_PROFILE_IMAGE) {
       setProfilePhoto(stored);
@@ -129,138 +132,144 @@ export const ProfileAvatar: React.FC = () => {
       </button>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. LIGHTBOX / PROFILE MODAL (PROPERLY CENTERED & 100% VISIBLE)
+          2. PORTAL LIGHTBOX / PROFILE MODAL
+          Rendered via createPortal directly into document.body with z-[99999]
+          so it is ALWAYS on top of WebGL 3D scenes, Canvas, and all content.
           ───────────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div
-            className="fixed inset-0 z-50 overflow-y-auto p-4 sm:p-6 bg-black/85 backdrop-blur-xl pointer-events-auto flex items-center justify-center"
-            onClick={() => setIsModalOpen(false)}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="profile-modal-title"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 12 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-sm sm:max-w-md my-auto flex flex-col rounded-2xl border border-white/15 bg-[#06080e]/95 backdrop-blur-2xl p-5 sm:p-6 shadow-[0_0_50px_rgba(0,0,0,0.9),0_0_20px_rgba(56,189,248,0.1)] text-slate-200 space-y-4 overflow-hidden"
-            >
-              {/* Top ambient hairline beam */}
-              <div className="absolute top-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80" />
-
-              {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
-                  <User className="w-3.5 h-3.5" />
-                  <span>PROFILE // SYS_IDENT</span>
-                </div>
-
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="p-1 rounded-md border border-white/10 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400"
-                  aria-label="Close profile modal"
+      {isMounted &&
+        createPortal(
+          <AnimatePresence>
+            {isModalOpen && (
+              <div
+                className="fixed inset-0 z-[99999] overflow-y-auto p-4 sm:p-6 bg-black/85 backdrop-blur-xl pointer-events-auto flex items-center justify-center"
+                onClick={() => setIsModalOpen(false)}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="profile-modal-title"
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.94, y: 12 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.94, y: 12 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="relative z-[100000] w-full max-w-sm sm:max-w-md my-auto flex flex-col rounded-2xl border border-white/20 bg-[#06080e]/98 backdrop-blur-2xl p-5 sm:p-6 shadow-[0_0_80px_rgba(0,0,0,0.95),0_0_30px_rgba(56,189,248,0.15)] text-slate-200 space-y-4 overflow-hidden"
                 >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+                  {/* Top ambient hairline beam */}
+                  <div className="absolute top-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80" />
 
-              {/* 100% Complete Image Box (object-contain with comfortable viewport height) */}
-              <div className="relative w-full h-[38vh] sm:h-[42vh] max-h-[380px] min-h-[220px] rounded-xl overflow-hidden border border-white/15 bg-black/95 shadow-2xl flex items-center justify-center p-2">
-                {!imageError ? (
-                  <img
-                    src={profilePhoto}
-                    alt={PROFILE_INFO.name}
-                    className="w-full h-full object-contain object-center select-none rounded-lg"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-slate-400 py-12">
-                    <User className="w-12 h-12 text-cyan-400" />
-                    <span className="text-xs font-mono">PD // IDENT_IMAGE</span>
-                  </div>
-                )}
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                    <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
+                      <User className="w-3.5 h-3.5" />
+                      <span>PROFILE // SYS_IDENT</span>
+                    </div>
 
-                {/* Tech corner accents */}
-                <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-cyan-400/60 pointer-events-none" />
-                <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-cyan-400/60 pointer-events-none" />
-                <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-cyan-400/60 pointer-events-none" />
-                <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-cyan-400/60 pointer-events-none" />
-
-                {/* Status Badge */}
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md border border-white/20 bg-black/80 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono text-white/90">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                  <span>{PROFILE_INFO.status}</span>
-                </div>
-              </div>
-
-              {/* Identity Details */}
-              <div className="space-y-0.5">
-                <h3
-                  id="profile-modal-title"
-                  className="text-lg font-bold tracking-tight text-white"
-                >
-                  {PROFILE_INFO.name}
-                </h3>
-                <p className="text-xs font-mono text-cyan-300 tracking-wider">
-                  {PROFILE_INFO.title} // {PROFILE_INFO.subtitle}
-                </p>
-              </div>
-
-              {/* Hidden File Input */}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png, image/jpeg, image/jpg, image/webp"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-
-              {/* Modal Controls / Footer */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-white/10">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleTriggerFileInput}
-                    disabled={isUploading}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-cyan-500/50 bg-cyan-500/10 hover:bg-cyan-500/20 text-xs font-mono text-cyan-200 hover:text-cyan-100 tracking-wider transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400 disabled:opacity-50"
-                  >
-                    {uploadSuccess ? (
-                      <>
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-emerald-400">UPDATED ✓</span>
-                      </>
-                    ) : (
-                      <>
-                        <Camera className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>{isUploading ? "SAVING..." : "CHANGE PHOTO"}</span>
-                      </>
-                    )}
-                  </button>
-
-                  {isCustomPhoto && (
                     <button
-                      onClick={handleResetToDefault}
-                      className="p-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/30 hover:bg-white/[0.04] transition-all"
-                      title="Reset to default photo"
-                      aria-label="Reset to default photo"
+                      onClick={() => setIsModalOpen(false)}
+                      className="p-1.5 rounded-md border border-white/10 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                      aria-label="Close profile modal"
                     >
-                      <RotateCcw className="w-3.5 h-3.5" />
+                      <X className="w-4 h-4" />
                     </button>
-                  )}
-                </div>
+                  </div>
 
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-white/10 text-xs font-mono text-slate-400 hover:text-white hover:border-white/20 transition-colors focus:outline-none"
-                >
-                  CLOSE
-                </button>
+                  {/* 100% Complete Image Box (object-contain with comfortable viewport height) */}
+                  <div className="relative w-full h-[38vh] sm:h-[42vh] max-h-[380px] min-h-[220px] rounded-xl overflow-hidden border border-white/15 bg-black/95 shadow-2xl flex items-center justify-center p-2">
+                    {!imageError ? (
+                      <img
+                        src={profilePhoto}
+                        alt={PROFILE_INFO.name}
+                        className="w-full h-full object-contain object-center select-none rounded-lg"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 text-slate-400 py-12">
+                        <User className="w-12 h-12 text-cyan-400" />
+                        <span className="text-xs font-mono">PD // IDENT_IMAGE</span>
+                      </div>
+                    )}
+
+                    {/* Tech corner accents */}
+                    <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-cyan-400/60 pointer-events-none" />
+                    <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-cyan-400/60 pointer-events-none" />
+                    <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-cyan-400/60 pointer-events-none" />
+                    <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-cyan-400/60 pointer-events-none" />
+
+                    {/* Status Badge */}
+                    <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md border border-white/20 bg-black/80 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono text-white/90">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
+                      <span>{PROFILE_INFO.status}</span>
+                    </div>
+                  </div>
+
+                  {/* Identity Details */}
+                  <div className="space-y-0.5">
+                    <h3
+                      id="profile-modal-title"
+                      className="text-lg font-bold tracking-tight text-white"
+                    >
+                      {PROFILE_INFO.name}
+                    </h3>
+                    <p className="text-xs font-mono text-cyan-300 tracking-wider">
+                      {PROFILE_INFO.title} // {PROFILE_INFO.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Hidden File Input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/jpg, image/webp"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+
+                  {/* Modal Controls / Footer */}
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-white/10">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={handleTriggerFileInput}
+                        disabled={isUploading}
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-cyan-500/50 bg-cyan-500/10 hover:bg-cyan-500/20 text-xs font-mono text-cyan-200 hover:text-cyan-100 tracking-wider transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400 disabled:opacity-50"
+                      >
+                        {uploadSuccess ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                            <span className="text-emerald-400">UPDATED ✓</span>
+                          </>
+                        ) : (
+                          <>
+                            <Camera className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>{isUploading ? "SAVING..." : "CHANGE PHOTO"}</span>
+                          </>
+                        )}
+                      </button>
+
+                      {isCustomPhoto && (
+                        <button
+                          onClick={handleResetToDefault}
+                          className="p-2 rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/30 hover:bg-white/[0.04] transition-all"
+                          title="Reset to default photo"
+                          aria-label="Reset to default photo"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="px-4 py-2 rounded-lg border border-white/10 text-xs font-mono text-slate-400 hover:text-white hover:border-white/20 transition-colors focus:outline-none"
+                    >
+                      CLOSE
+                    </button>
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
-          </div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 };
