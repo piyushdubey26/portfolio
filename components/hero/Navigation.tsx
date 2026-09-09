@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
+import { ProfileAvatar } from "./ProfileAvatar";
+
 interface NavigationProps {
   activeSection?: string | null;
   isScrolled?: boolean;
@@ -139,14 +141,6 @@ export const Navigation: React.FC<NavigationProps> = ({
     [onNavigate, onEnterClick, updateSectionState]
   );
 
-  // Scroll to top handler (Hero)
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    updateSectionState(null);
-    setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 pointer-events-auto bg-[#05080c]/85 backdrop-blur-xl border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.8),0_1px_0_rgba(56,189,248,0.06)] ${
@@ -174,19 +168,9 @@ export const Navigation: React.FC<NavigationProps> = ({
 
       {/* Main Navbar Container */}
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Left: Brand Identity / PD Monogram */}
+        {/* Left: Interactive Profile Avatar Component */}
         <div className="flex items-center gap-4">
-          <a
-            href="#"
-            onClick={handleLogoClick}
-            className="group relative flex items-center gap-2.5 px-3 py-1.5 rounded-md border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/40 hover:bg-cyan-950/20 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
-            aria-label="Piyush Dubey Home"
-          >
-            <span className="font-mono text-xs font-semibold tracking-widest text-white/90 group-hover:text-white transition-colors">
-              PD
-            </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400/90 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-          </a>
+          <ProfileAvatar />
 
           {/* Minimal status indicator on desktop */}
           <div className="hidden lg:flex items-center gap-2 text-[10px] font-mono text-white/40 tracking-wider">
