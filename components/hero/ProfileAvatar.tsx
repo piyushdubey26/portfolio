@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, X, Upload, RotateCcw, User, CheckCircle2 } from "lucide-react";
+import { Camera, X, RotateCcw, User, CheckCircle2 } from "lucide-react";
 import {
   DEFAULT_PROFILE_IMAGE,
   PROFILE_INFO,
@@ -21,7 +21,7 @@ export const ProfileAvatar: React.FC = () => {
   const [imageError, setImageError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load stored profile photo from localStorage on client mount
+  // Load stored profile photo from localStorage on mount
   useEffect(() => {
     const stored = getStoredProfilePhoto();
     if (stored && stored !== DEFAULT_PROFILE_IMAGE) {
@@ -29,6 +29,17 @@ export const ProfileAvatar: React.FC = () => {
       setIsCustomPhoto(true);
     }
   }, []);
+
+  // Lock background body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isModalOpen]);
 
   // Handle ESC key to close modal
   useEffect(() => {
@@ -62,12 +73,11 @@ export const ProfileAvatar: React.FC = () => {
       setStoredProfilePhoto(processedDataUrl);
 
       setUploadSuccess(true);
-      setTimeout(() => setUploadSuccess(false), 2000);
+      setTimeout(() => setUploadSuccess(false), 2200);
     } catch (err) {
       console.error("Error processing profile photo:", err);
     } finally {
       setIsUploading(false);
-      // Reset input value so same file can be re-selected if needed
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -85,13 +95,14 @@ export const ProfileAvatar: React.FC = () => {
   return (
     <>
       {/* ─────────────────────────────────────────────────────────────
-          NAVBAR AVATAR BUTTON
+          1. NAVBAR AVATAR BUTTON
           Exact same dimensions & position as previous PD logo.
+          Uses object-fit: cover for the compact circular/rounded thumbnail.
           ───────────────────────────────────────────────────────────── */}
       <button
         onClick={() => setIsModalOpen(true)}
         className="group relative flex items-center gap-2 p-1 rounded-md border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/40 hover:bg-cyan-950/20 transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400"
-        aria-label="View and manage profile photo of Piyush Dubey"
+        aria-label="View profile photo of Piyush Dubey"
         title="Piyush Dubey — View profile photo"
       >
         {/* Rounded Avatar Frame */}
@@ -118,30 +129,31 @@ export const ProfileAvatar: React.FC = () => {
       </button>
 
       {/* ─────────────────────────────────────────────────────────────
-          LIGHTBOX / PROFILE MODAL
+          2. LIGHTBOX / PROFILE MODAL (100% UN-CROPPED, OBJECT-CONTAIN)
+          Fits comfortably inside viewport without extending outside screen.
           ───────────────────────────────────────────────────────────── */}
       <AnimatePresence>
         {isModalOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl pointer-events-auto"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-xl pointer-events-auto"
             onClick={() => setIsModalOpen(false)}
             role="dialog"
             aria-modal="true"
             aria-labelledby="profile-modal-title"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 15 }}
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 15 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-sm sm:max-w-md rounded-2xl border border-white/15 bg-[#06080e]/95 backdrop-blur-2xl p-6 sm:p-7 shadow-[0_0_50px_rgba(0,0,0,0.9),0_0_20px_rgba(56,189,248,0.1)] space-y-5 text-slate-200 overflow-hidden"
+              className="relative w-full max-w-md sm:max-w-lg max-h-[calc(100vh-40px)] sm:max-h-[calc(100vh-60px)] flex flex-col rounded-2xl border border-white/15 bg-[#06080e]/95 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.9),0_0_20px_rgba(56,189,248,0.1)] text-slate-200 overflow-hidden"
             >
               {/* Top ambient hairline beam */}
               <div className="absolute top-0 left-0 w-full h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80" />
 
               {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/10 shrink-0">
                 <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
                   <User className="w-3.5 h-3.5" />
                   <span>PROFILE // SYS_IDENT</span>
@@ -149,52 +161,55 @@ export const ProfileAvatar: React.FC = () => {
 
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="p-1 rounded-md border border-white/10 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                  className="p-1.5 rounded-md border border-white/10 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-all focus:outline-none focus:ring-1 focus:ring-cyan-400"
                   aria-label="Close profile modal"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Large Profile Image Frame */}
-              <div className="relative w-full aspect-[3/4] max-h-[48vh] rounded-xl overflow-hidden border border-white/15 bg-black/80 shadow-2xl flex items-center justify-center">
-                {!imageError ? (
-                  <img
-                    src={profilePhoto}
-                    alt={PROFILE_INFO.name}
-                    className="w-full h-full object-cover object-center select-none"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-slate-400">
-                    <User className="w-12 h-12 text-cyan-400" />
-                    <span className="text-xs font-mono">PD // IDENT_IMAGE</span>
+              {/* Scrollable / Flexible Content Area */}
+              <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 space-y-4 flex flex-col">
+                {/* 100% Uncropped Image Container (Object-Contain) */}
+                <div className="relative w-full flex-1 min-h-[220px] max-h-[56vh] sm:max-h-[60vh] rounded-xl overflow-hidden border border-white/15 bg-black/90 shadow-2xl flex items-center justify-center p-2">
+                  {!imageError ? (
+                    <img
+                      src={profilePhoto}
+                      alt={PROFILE_INFO.name}
+                      className="max-w-full max-h-[52vh] sm:max-h-[56vh] w-auto h-auto object-contain select-none rounded-lg"
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 text-slate-400 py-12">
+                      <User className="w-12 h-12 text-cyan-400" />
+                      <span className="text-xs font-mono">PD // IDENT_IMAGE</span>
+                    </div>
+                  )}
+
+                  {/* Tech corner accents */}
+                  <div className="absolute top-2 left-2 w-2.5 h-2.5 border-t border-l border-cyan-400/60 pointer-events-none" />
+                  <div className="absolute top-2 right-2 w-2.5 h-2.5 border-t border-r border-cyan-400/60 pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b border-l border-cyan-400/60 pointer-events-none" />
+                  <div className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b border-r border-cyan-400/60 pointer-events-none" />
+
+                  {/* Status Badge */}
+                  <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md border border-white/20 bg-black/80 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono text-white/90">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
+                    <span>{PROFILE_INFO.status}</span>
                   </div>
-                )}
-
-                {/* Tech corner accents */}
-                <div className="absolute top-2.5 left-2.5 w-2.5 h-2.5 border-t border-l border-cyan-400/60 pointer-events-none" />
-                <div className="absolute top-2.5 right-2.5 w-2.5 h-2.5 border-t border-r border-cyan-400/60 pointer-events-none" />
-                <div className="absolute bottom-2.5 left-2.5 w-2.5 h-2.5 border-b border-l border-cyan-400/60 pointer-events-none" />
-                <div className="absolute bottom-2.5 right-2.5 w-2.5 h-2.5 border-b border-r border-cyan-400/60 pointer-events-none" />
-
-                {/* Status Badge */}
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md border border-white/20 bg-black/70 backdrop-blur-md flex items-center gap-1.5 text-[10px] font-mono text-white/90">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                  <span>{PROFILE_INFO.status}</span>
                 </div>
-              </div>
 
-              {/* Identity Details */}
-              <div className="space-y-1">
-                <h3
-                  id="profile-modal-title"
-                  className="text-lg sm:text-xl font-bold tracking-tight text-white"
-                >
-                  {PROFILE_INFO.name}
-                </h3>
-                <p className="text-xs font-mono text-cyan-300 tracking-wider">
-                  {PROFILE_INFO.title} // {PROFILE_INFO.subtitle}
-                </p>
+                {/* Identity Details */}
+                <div className="space-y-0.5 shrink-0 pt-1">
+                  <h3
+                    id="profile-modal-title"
+                    className="text-lg sm:text-xl font-bold tracking-tight text-white"
+                  >
+                    {PROFILE_INFO.name}
+                  </h3>
+                  <p className="text-xs font-mono text-cyan-300 tracking-wider">
+                    {PROFILE_INFO.title} // {PROFILE_INFO.subtitle}
+                  </p>
+                </div>
               </div>
 
               {/* Hidden File Input */}
@@ -206,8 +221,8 @@ export const ProfileAvatar: React.FC = () => {
                 onChange={handleFileChange}
               />
 
-              {/* Modal Controls */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-white/10">
+              {/* Modal Controls / Footer */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 px-5 py-3.5 border-t border-white/10 shrink-0 bg-white/[0.01]">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleTriggerFileInput}
